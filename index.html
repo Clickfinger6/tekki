@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tekki — The money app for Gambians everywhere</title>
+<meta name="description" content="Send money by phone or username. Receive from abroad instantly. Spend anywhere. Win real money through challenges. Built for Gambians at home and abroad.">
+<meta property="og:title" content="Tekki 🇬🇲 — Move money. Unlock rewards. Stay connected.">
+<meta property="og:description" content="The money app for Gambians at home and abroad. Send, receive, spend, and win. Only 150 founding spots.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#121212;
+  --ink:#1C1C1C;
+  --ink-2:#1E1E1E;
+  --ink-3:#262626;
+  --white:#FFFFFF;
+  --sand:#F8F9FB;
+  --sand-2:#EEEEF4;
+  --ocean:#6B4CFF;
+  --ocean-2:#C484EC;
+  --ocean-lt:rgba(107,76,255,.12);
+  --gold:#00D4AA;
+  --gold-dk:#00A888;
+  --gold-lt:rgba(0,212,170,.1);
+  --sunset:#C484EC;
+  --palm:#00D4AA;
+  --border-dark:rgba(255,255,255,.08);
+  --border-light:rgba(13,13,13,.08);
+  --muted-dark:rgba(255,255,255,.42);
+  --muted-light:rgba(13,13,13,.45);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(5,5,5,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-dark)}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-lm{width:30px;height:30px;background:var(--ocean);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-lt{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:var(--white)}
+.nav-center{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--gold)}
+.blink{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.4s infinite}
+.nav-cta{padding:9px 20px;background:var(--gold);color:var(--ink);border:none;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.nav-cta:hover{background:#25D366;transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 5% 60px;position:relative;overflow:hidden;text-align:center;background:var(--black)}
+.hero-glow{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:800px;height:600px;border-radius:50%;background:radial-gradient(ellipse,rgba(107,76,255,.11) 0%,transparent 65%);pointer-events:none;animation:breathe 7s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:52px 52px;pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:640px;width:100%}
+
+/* Ring */
+.ring-wrap{width:148px;height:148px;position:relative;margin:0 auto 36px}
+.ring-svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:5}
+.ring-arc{fill:none;stroke:var(--gold);stroke-width:5;stroke-linecap:round;stroke-dasharray:432;stroke-dashoffset:432;transition:stroke-dashoffset 1.2s ease}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:500;color:var(--gold);line-height:1}
+.ring-sub{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-dark);margin-top:3px}
+
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,170,.09);border:1px solid rgba(0,212,170,.2);color:var(--gold);padding:6px 16px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:24px}
+
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,9vw,74px);font-weight:400;line-height:1.01;letter-spacing:-.025em;color:var(--white);margin-bottom:16px}
+.hero-h1 em{font-style:italic;color:var(--ocean-2)}
+
+.hero-sub{font-size:clamp(15px,3vw,18px);color:var(--muted-dark);line-height:1.7;font-weight:300;margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto}
+.hero-sub strong{color:rgba(255,255,255,.75);font-weight:500}
+
+/* Form card */
+.form-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;max-width:440px;margin:0 auto 24px;backdrop-filter:blur(12px)}
+.fl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:6px;display:block;text-align:left}
+.fi{width:100%;padding:13px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:11px;background:rgba(255,255,255,.05);color:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;margin-bottom:12px}
+.fi:focus{border-color:var(--gold);background:rgba(255,255,255,.08)}
+.fi::placeholder{color:rgba(255,255,255,.2)}
+.fphone{display:flex;border:1.5px solid rgba(255,255,255,.1);border-radius:11px;overflow:hidden;margin-bottom:16px;transition:border-color .2s}
+.fphone:focus-within{border-color:var(--gold)}
+.fprefix{padding:13px 14px;background:rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.09);font-size:14px;font-weight:600;color:rgba(255,255,255,.55);white-space:nowrap;flex-shrink:0}
+.fpin{border:none;outline:none;padding:13px 16px;background:transparent;color:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;width:100%;-webkit-appearance:none}
+.fpin::placeholder{color:rgba(255,255,255,.2)}
+.ferr{font-size:12px;color:var(--sunset);margin:-8px 0 8px;display:none;text-align:left;font-weight:500}
+.fbtn{width:100%;padding:15px;background:var(--gold);color:var(--ink);border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(0,212,170,.28);letter-spacing:.01em}
+.fbtn:hover{background:#25D366;transform:translateY(-1px);box-shadow:0 6px 28px rgba(0,212,170,.38)}
+.fbtn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Progress */
+.prog-wrap{max-width:440px;margin:0 auto}
+.prog-outer{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.prog-inner{height:3px;background:linear-gradient(90deg,var(--ocean),var(--gold));border-radius:2px;transition:width 1.2s ease;width:0%}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted-dark);font-weight:500}
+.prog-label span{color:var(--gold);font-weight:700}
+
+/* ── SECTIONS ── */
+.sec{padding:96px 5%;position:relative;overflow:hidden}
+.sec-inner{max-width:1100px;margin:0 auto}
+.sec-light{background:var(--sand)}
+.sec-dark{background:var(--ink-2)}
+.sec-black{background:var(--black)}
+.sec-ocean{background:#0E0820}
+
+.sec-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.tag-ocean{color:var(--ocean-2)}
+.tag-gold{color:var(--gold)}
+.tag-palm{color:var(--palm)}
+.tag-white{color:rgba(255,255,255,.4)}
+
+.sec-h{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,56px);font-weight:400;line-height:1.04;letter-spacing:-.022em;margin-bottom:16px}
+.sec-h em{font-style:italic}
+.sec-h-dark{color:var(--ink)}
+.sec-h-light{color:var(--white)}
+.sec-p{font-size:clamp(15px,2.2vw,17px);line-height:1.75;font-weight:300;margin-bottom:28px;max-width:480px}
+.sec-p-dark{color:var(--muted-light)}
+.sec-p-light{color:var(--muted-dark)}
+
+/* ── SPLIT ── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.split.flip{direction:rtl}.split.flip>*{direction:ltr}
+
+/* ── PHONE ── */
+.phone-wrap{display:flex;justify-content:center;align-items:center;position:relative}
+.phone{width:230px;height:470px;background:#0E0E0E;border-radius:40px;padding:13px;position:relative;box-shadow:0 48px 90px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.07);flex-shrink:0}
+.phone::before{content:'';position:absolute;top:13px;left:50%;transform:translateX(-50%);width:76px;height:26px;background:#0E0E0E;border-radius:0 0 18px 18px;z-index:10}
+.phone-screen{width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--sand)}
+.pglow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:340px;height:340px;border-radius:50%;pointer-events:none;z-index:0}
+
+/* ── FEATURE PILLS ── */
+.pill-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
+.fpill{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:100px;font-size:13px;font-weight:500}
+.fpill-ocean{background:var(--ocean-lt);color:var(--ocean-2);border:1px solid rgba(107,76,255,.2)}
+.fpill-gold{background:var(--gold-lt);color:var(--gold-dk);border:1px solid rgba(0,212,170,.2)}
+.fpill-light{background:rgba(13,13,13,.05);color:var(--ink);border:1px solid rgba(13,13,13,.08)}
+.fpill-dark{background:rgba(255,255,255,.06);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.08)}
+.fpill-palm{background:rgba(0,212,170,.1);color:#00A888;border:1px solid rgba(52,214,121,.18)}
+
+/* ── SEND SCREEN ── */
+.ss{padding:42px 16px 16px;display:flex;flex-direction:column;height:100%}
+.ss-hd{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px}
+.ss-lbl{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:rgba(13,13,13,.38);margin-bottom:5px}
+.ss-to{display:flex;align-items:center;gap:8px;background:var(--white);border-radius:10px;padding:9px 12px;margin-bottom:14px;border:1.5px solid #EDE8FF}
+.ss-at{font-size:13px;color:var(--ocean);font-weight:700}
+.ss-val{font-size:13px;font-weight:600;color:var(--ink);flex:1}
+.ss-av{width:26px;height:26px;border-radius:50%;background:var(--ocean);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
+.ss-amt{font-family:'Cormorant Garamond',serif;font-size:50px;font-weight:500;color:var(--ink);line-height:1;margin-bottom:3px}
+.ss-cur{font-size:10px;color:rgba(13,13,13,.35);margin-bottom:16px}
+.ss-pad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex:1}
+.ss-k{background:var(--white);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:var(--ink);min-height:34px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ss-k.go{grid-column:1/-1;background:var(--ocean);color:var(--white);font-size:12px;font-weight:700;min-height:40px;border-radius:10px}
+
+/* ── RECEIVE SCREEN ── */
+.rs{padding:42px 14px 14px;display:flex;flex-direction:column;height:100%}
+.rs-ntf{background:var(--white);border-radius:12px;padding:12px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.rs-ntf-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.rs-ic{width:26px;height:26px;border-radius:50%;background:#EDE8FF;display:flex;align-items:center;justify-content:center;font-size:12px}
+.rs-ntf-title{font-size:11px;font-weight:700;color:var(--ink)}
+.rs-ntf-time{margin-left:auto;font-size:9px;color:rgba(13,13,13,.3)}
+.rs-big{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:500;color:var(--ink);line-height:1;margin-bottom:2px}
+.rs-rate{font-size:9px;color:rgba(13,13,13,.38);margin-bottom:12px}
+.rs-lbl{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:rgba(13,13,13,.35);margin-bottom:7px}
+.rs-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:auto}
+.rs-opt{display:flex;align-items:center;gap:8px;background:var(--white);border-radius:9px;padding:8px 10px;border:1.5px solid rgba(13,13,13,.06)}
+.rs-opt.sel{border-color:var(--ocean);background:#F0ECFF}
+.rs-flag{font-size:14px}
+.rs-cur{font-size:11px;font-weight:700;color:var(--ink)}
+.rs-name{font-size:9px;color:rgba(13,13,13,.38)}
+.rs-amt{margin-left:auto;font-size:12px;font-weight:700;color:var(--ocean)}
+.rs-btn{background:var(--ocean);color:var(--white);border-radius:10px;padding:11px;text-align:center;font-size:11px;font-weight:700;margin-top:12px}
+
+/* ── HOME SCREEN ── */
+.hs{padding:42px 14px 14px;display:flex;flex-direction:column;height:100%}
+.hs-gr{font-size:10px;color:rgba(13,13,13,.38);margin-bottom:2px}
+.hs-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px}
+.hs-bal-lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:rgba(13,13,13,.35);margin-bottom:2px}
+.hs-bal{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:500;color:var(--ink);line-height:1;margin-bottom:5px}
+.hs-curs{display:flex;gap:5px;margin-bottom:16px}
+.hs-cur{font-size:9px;font-weight:600;padding:2px 7px;border-radius:100px;background:rgba(13,13,13,.06);color:rgba(13,13,13,.45)}
+.hs-cur.active{background:var(--ocean);color:var(--white)}
+.hs-acts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+.hs-act{background:var(--white);border-radius:9px;padding:8px 3px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hs-act-ic{font-size:15px;margin-bottom:3px}
+.hs-act-lb{font-size:8px;font-weight:600;color:rgba(13,13,13,.45)}
+.hs-txns{flex:1}
+.hs-txn-lbl{font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:rgba(13,13,13,.3);margin-bottom:8px}
+.hs-txn{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.hs-txn-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.hs-txn-name{font-size:11px;font-weight:600;color:var(--ink)}
+.hs-txn-sub{font-size:9px;color:rgba(13,13,13,.38)}
+.hs-txn-amt{margin-left:auto;font-size:12px;font-weight:700}
+.pos{color:var(--ocean)}
+.neg{color:var(--ink)}
+.hs-nb{display:flex;justify-content:space-around;padding:10px 0 2px;border-top:1px solid rgba(13,13,13,.06);margin-top:auto}
+.hs-nb-ic{text-align:center}
+.hs-nb-ic span:first-child{font-size:16px;display:block}
+.hs-nb-ic span:last-child{font-size:8px;color:rgba(13,13,13,.35);font-weight:500}
+
+/* ── CHALLENGES SECTION ── */
+.challenge-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
+.ch-card{border-radius:16px;padding:20px;border:1px solid;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;cursor:default}
+.ch-card:hover{transform:translateY(-3px)}
+.ch-card-dark{background:var(--ink-3);border-color:rgba(255,255,255,.07)}
+.ch-card-dark:hover{border-color:rgba(255,255,255,.14)}
+.ch-card-gold{background:rgba(0,212,170,.06);border-color:rgba(0,212,170,.18)}
+.ch-card-gold:hover{border-color:rgba(0,212,170,.35)}
+.ch-card-ocean{background:rgba(10,126,140,.08);border-color:rgba(107,76,255,.2)}
+.ch-card-ocean:hover{border-color:rgba(107,76,255,.4)}
+.ch-icon-wrap{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.ch-reward{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ch-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.3}
+.ch-body{font-size:12px;color:var(--muted-dark);line-height:1.55;font-weight:300}
+.ch-badge{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:100px}
+.ch-badge-new{background:rgba(0,212,170,.15);color:var(--palm)}
+.ch-badge-hot{background:rgba(196,132,236,.15);color:var(--sunset)}
+.ch-progress{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:14px;overflow:hidden}
+.ch-progress-fill{height:3px;border-radius:2px}
+
+/* Leaderboard mini */
+.lb-mini{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:20px}
+.lb-mini-hd{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--palm);animation:blink 1.4s infinite}
+.lb-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.lb-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
+.lb-uname{font-size:13px;font-weight:600;color:var(--white);flex:1}
+.lb-pts{font-size:12px;font-weight:700;color:var(--gold)}
+.lb-you{font-size:9px;background:rgba(107,76,255,.2);color:var(--ocean-2);padding:2px 7px;border-radius:100px;font-weight:700;margin-left:4px}
+
+/* ── CARD SECTION ── */
+.cards-visual{display:flex;justify-content:center;align-items:center;position:relative;height:300px}
+.tc{position:absolute;width:290px;height:182px;border-radius:16px;padding:22px 24px;overflow:hidden}
+.tc-teal{background:linear-gradient(135deg,#1A0F4F 0%,#5438CC 45%,#6B4CFF 75%,#A78BFA 100%);box-shadow:0 40px 80px rgba(107,76,255,.32),0 14px 36px rgba(0,0,0,.4);transform:rotate(-4deg) translateX(-22px);z-index:2;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease;cursor:pointer}
+.tc-teal:hover{transform:rotate(0deg) translateX(-22px) translateY(-8px)!important;box-shadow:0 60px 100px rgba(107,76,255,.38),0 20px 48px rgba(0,0,0,.45)!important}
+.tc-gold{background:linear-gradient(135deg,#0D0F1A 0%,#1A1F3A 50%,#2A2550 100%);box-shadow:0 24px 48px rgba(0,0,0,.45);transform:rotate(7deg) translateX(60px) translateY(10px);z-index:1}
+.tc-ring{position:absolute;border-radius:50%;border:1px solid}
+.tc-chip{border-radius:4px;margin-bottom:14px;position:relative;z-index:1}
+.tc-chip-teal{width:32px;height:25px;background:linear-gradient(135deg,#E8C96A,#D4A843,#B8921E);box-shadow:0 2px 5px rgba(0,0,0,.2)}
+.tc-chip-gold{width:32px;height:25px;background:linear-gradient(135deg,#00D4AA,#00A888)}
+.tc-chip::before,.tc-chip::after{content:'';position:absolute;background:rgba(100,60,0,.28)}
+.tc-chip::before{top:8px;left:0;right:0;height:1px}
+.tc-chip::after{top:0;bottom:0;left:11px;width:1px}
+.tc-num{font-size:12px;font-weight:500;letter-spacing:.14em;margin-bottom:16px;font-family:monospace;position:relative;z-index:1}
+.tc-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:1}
+.tc-holder-lbl{font-size:7px;letter-spacing:.09em;text-transform:uppercase;margin-bottom:2px}
+.tc-holder-name{font-size:11px;font-weight:600;letter-spacing:.04em}
+.tc-debit{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;font-style:italic}
+
+/* ── REFERRAL ── */
+.ref-card{background:var(--ink-3);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:32px;display:flex;align-items:center;gap:28px}
+.ref-icon{width:60px;height:60px;border-radius:18px;background:rgba(0,212,170,.1);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.ref-title{font-size:18px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.3}
+.ref-body{font-size:14px;color:var(--muted-dark);line-height:1.6;font-weight:300}
+.wa-btn{display:inline-flex;align-items:center;gap:9px;background:#25D366;color:var(--white);padding:13px 24px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;box-shadow:0 4px 14px rgba(37,211,102,.28);white-space:nowrap;flex-shrink:0}
+.wa-btn:hover{background:#00A888;transform:translateY(-1px)}
+.wa-btn svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+
+/* ── TRUST ── */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.trust-card{background:var(--white);border-radius:16px;padding:28px 24px;border:1px solid var(--sand-2)}
+.trust-icon{font-size:28px;margin-bottom:14px}
+.trust-title{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.trust-body{font-size:13px;color:var(--muted-light);line-height:1.65;font-weight:300}
+
+/* ── SECOND CTA ── */
+.cta2-section{background:#0E0820;padding:96px 5%;text-align:center;position:relative;overflow:hidden}
+.cta2-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(107,76,255,.14),transparent 65%);pointer-events:none}
+.cta2-inner{max-width:560px;margin:0 auto;position:relative;z-index:1}
+.cta2-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,7vw,64px);font-weight:400;color:var(--white);line-height:1.02;letter-spacing:-.025em;margin-bottom:14px}
+.cta2-h em{font-style:italic;color:var(--ocean-2)}
+.cta2-sub{font-size:16px;color:var(--muted-dark);margin-bottom:36px;font-weight:300;line-height:1.7}
+.cta2-prog-outer{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.cta2-prog-inner{height:5px;background:linear-gradient(90deg,var(--ocean),var(--gold));border-radius:3px;transition:width 1.5s ease;width:0%}
+.cta2-prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted-dark);margin-bottom:28px}
+.cta2-prog-label strong{color:var(--gold);font-weight:700}
+
+/* ── FOOTER ── */
+footer{padding:28px 5%;text-align:center;border-top:1px solid var(--border-dark)}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);margin-bottom:6px}
+.footer-sub{font-size:12px;color:rgba(255,255,255,.22)}
+
+/* ── SUCCESS ── */
+.soverlay{display:none;position:fixed;inset:0;background:rgba(5,5,5,.97);z-index:500;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px}
+.soverlay.show{display:flex}
+.s-ico{font-size:64px;margin-bottom:20px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.s-h{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,8vw,56px);font-weight:400;color:var(--white);margin-bottom:8px;line-height:1.02}
+.s-h em{color:var(--gold);font-style:italic}
+.s-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.25);color:var(--gold);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;margin-bottom:16px}
+.s-sub{font-size:16px;color:var(--muted-dark);margin-bottom:32px;font-weight:300;line-height:1.65;max-width:380px}
+.s-wa{display:flex;align-items:center;gap:9px;justify-content:center;background:#25D366;color:var(--white);padding:15px 28px;border-radius:100px;font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;width:100%;max-width:360px;box-shadow:0 6px 20px rgba(37,211,102,.28);margin-bottom:12px}
+.s-wa:hover{background:#00A888;transform:translateY(-2px)}
+.s-wa svg{width:20px;height:20px;fill:currentColor;flex-shrink:0}
+.s-dismiss{font-size:14px;color:rgba(255,255,255,.25);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:8px;transition:color .2s}
+.s-dismiss:hover{color:rgba(255,255,255,.5)}
+
+/* confetti */
+.cp{position:fixed;pointer-events:none;z-index:600;border-radius:2px;animation:cf 2.8s ease-in forwards}
+@keyframes cf{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(800deg);opacity:0}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* responsive */
+@media(max-width:900px){
+  .split{grid-template-columns:1fr;gap:48px}
+  .split.flip{direction:ltr}
+  .phone-wrap{order:-1}
+  .challenge-cards{grid-template-columns:1fr 1fr}
+  .trust-grid{grid-template-columns:1fr}
+  .ref-card{flex-direction:column;text-align:center}
+  .cards-visual{height:240px}
+  .tc{width:230px;height:145px}
+  .tc-teal{transform:rotate(-4deg) translateX(-16px)}
+  .tc-gold{transform:rotate(7deg) translateX(48px) translateY(8px)}
+}
+@media(max-width:600px){
+  .challenge-cards{grid-template-columns:1fr}
+  .hero-inner{padding:0 4px}
+  nav .nav-center{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-lm"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.5 8H19L13.8 11.8L15.9 18L10 14.3L4.1 18L6.2 11.8L1 8H7.5L10 2Z" fill="white"/></svg></div>
+    <span class="nav-lt">Tekki</span>
+  </a>
+  <div class="nav-center"><div class="blink"></div><span id="navSpots">150</span>&nbsp;founding spots left</div>
+  <button class="nav-cta" onclick="scrollToForm()">Join free</button>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+
+    <div class="ring-wrap">
+      <svg class="ring-svg" viewBox="0 0 148 148">
+        <circle class="ring-track" cx="74" cy="74" r="68"/>
+        <circle class="ring-arc" id="ringArc" cx="74" cy="74" r="68"/>
+      </svg>
+      <div class="ring-center">
+        <div class="ring-num" id="ringNum">150</div>
+        <div class="ring-sub">spots left</div>
+      </div>
+    </div>
+
+    <div class="hero-tag"><div class="blink"></div>Founding members · Limited to 150</div>
+
+    <h1 class="hero-h1">
+      The money app for<br>Gambians <em>everywhere.</em>
+    </h1>
+
+    <p class="hero-sub">
+      <strong>Send</strong> money by phone number or username. <strong>Receive</strong> from abroad instantly. <strong>Spend</strong> from your wallet. <strong>Earn</strong> real rewards through challenges.
+    </p>
+
+    <div class="form-card" id="heroForm">
+      <form id="wlForm" novalidate>
+        <label class="fl" for="fn">Full name</label>
+        <input class="fi" type="text" id="fn" placeholder="e.g. Fatou Keita" autocomplete="name">
+        <div class="ferr" id="fnErr">Please enter your full name</div>
+
+        <label class="fl" for="em">Email address</label>
+        <input class="fi" type="email" id="em" placeholder="e.g. fatou@gmail.com" autocomplete="email">
+        <div class="ferr" id="emErr">Please enter a valid email</div>
+
+        <label class="fl" for="ph">Phone number</label>
+        <div class="fphone" id="phWrap">
+          <div class="fprefix">🇬🇲 +220</div>
+          <input class="fpin" type="tel" id="ph" placeholder="7XX XXXX" maxlength="7" inputmode="numeric">
+        </div>
+        <div class="ferr" id="phErr">Please enter a valid Gambian number</div>
+
+        <button class="fbtn" type="submit" id="submitBtn">Claim my founding spot →</button>
+      </form>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-outer"><div class="prog-inner" id="heroBar"></div></div>
+      <div class="prog-label"><span id="heroTaken">0</span> spots claimed &nbsp;·&nbsp; <span id="heroLeft">150</span> remaining</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SEND ══════════════════ -->
+<section class="sec sec-light">
+  <div class="sec-inner split">
+    <div class="reveal">
+      <div class="sec-tag tag-ocean">Send money</div>
+      <h2 class="sec-h sec-h-dark">Use their phone number<br>or <em>@username.</em><br>That's it.</h2>
+      <p class="sec-p sec-p-dark">No bank account numbers. No branch codes. No queues. Type a phone number or @username, enter how much, and it arrives in seconds. Send to anyone in Gambia — even if they are not on Tekki yet.</p>
+      <div class="pill-row">
+        <div class="fpill fpill-light">⚡ Instant</div>
+        <div class="fpill fpill-light">🇬🇲 Works in Gambia</div>
+        <div class="fpill fpill-ocean">D0 fees</div>
+        <div class="fpill fpill-light">📱 Phone or @username</div>
+      </div>
+    </div>
+    <div class="phone-wrap reveal d1">
+      <div class="pglow" style="background:radial-gradient(circle,rgba(107,76,255,.16),transparent 65%)"></div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="ss">
+            <div class="ss-hd">Send money</div>
+            <div class="ss-lbl">To — @username or phone number</div>
+            <div class="ss-to">
+              <span class="ss-at">@</span>
+              <span class="ss-val">lamin22</span>
+              <div class="ss-av">LJ</div>
+            </div>
+            <div class="ss-lbl">Amount</div>
+            <div class="ss-amt">D 500</div>
+            <div class="ss-cur">Gambian Dalasi · Balance: D14,820</div>
+            <div class="ss-pad">
+              <div class="ss-k">1</div><div class="ss-k">2</div><div class="ss-k">3</div>
+              <div class="ss-k">4</div><div class="ss-k">5</div><div class="ss-k">6</div>
+              <div class="ss-k">7</div><div class="ss-k">8</div><div class="ss-k">9</div>
+              <div class="ss-k">.</div><div class="ss-k">0</div><div class="ss-k">⌫</div>
+              <div class="ss-k go">Send D 500 →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RECEIVE ══════════════════ -->
+<section class="sec sec-dark">
+  <div class="sec-inner split flip">
+    <div class="reveal">
+      <div class="sec-tag tag-ocean">Receive from abroad</div>
+      <h2 class="sec-h sec-h-light">From London to Banjul<br>in <em>seconds.</em></h2>
+      <p class="sec-p sec-p-light">Your family in the UK, US, or anywhere in the world can send you money through Tekki. It lands in your wallet instantly — converted to Dalasi at the live rate. Or hold it in pounds, dollars, or euros. You decide what to do with your own money.</p>
+      <div class="pill-row">
+        <div class="fpill fpill-dark">🇬🇧 From UK</div>
+        <div class="fpill fpill-dark">🇺🇸 From USA</div>
+        <div class="fpill fpill-dark">🌍 Anywhere</div>
+        <div class="fpill fpill-ocean">Live exchange rate</div>
+        <div class="fpill fpill-dark">Hold in any currency</div>
+      </div>
+    </div>
+    <div class="phone-wrap reveal d1">
+      <div class="pglow" style="background:radial-gradient(circle,rgba(0,212,170,.1),transparent 65%)"></div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="rs">
+            <div style="font-size:10px;color:var(--ocean);font-weight:600;margin-bottom:12px;">← Back</div>
+            <div class="rs-ntf">
+              <div class="rs-ntf-row">
+                <div class="rs-ic">💸</div>
+                <div><div class="rs-ntf-title">Money received</div><div style="font-size:9px;color:rgba(13,13,13,.38);">From United Kingdom</div></div>
+                <div class="rs-ntf-time">just now</div>
+              </div>
+              <div class="rs-big">£ 50.00</div>
+              <div class="rs-rate">Live rate · 1 GBP = 85 GMD</div>
+            </div>
+            <div class="rs-lbl">Receive as</div>
+            <div class="rs-opts">
+              <div class="rs-opt sel"><span class="rs-flag">🇬🇲</span><div><div class="rs-cur">GMD</div><div class="rs-name">Gambian Dalasi</div></div><div class="rs-amt">D 4,250</div></div>
+              <div class="rs-opt"><span class="rs-flag">🇬🇧</span><div><div class="rs-cur">GBP</div><div class="rs-name">British Pound</div></div><div class="rs-amt">£ 50.00</div></div>
+              <div class="rs-opt"><span class="rs-flag">🇺🇸</span><div><div class="rs-cur">USD</div><div class="rs-name">US Dollar</div></div><div class="rs-amt">$ 63.20</div></div>
+            </div>
+            <div class="rs-btn">Add D 4,250 to my wallet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SPEND / WALLET ══════════════════ -->
+<section class="sec sec-black">
+  <div class="sec-inner split">
+    <div class="reveal">
+      <div class="sec-tag tag-gold">Wallet & card</div>
+      <h2 class="sec-h sec-h-light">Your money.<br>Ready when<br><em>you are.</em></h2>
+      <p class="sec-p sec-p-light">Everything you receive, earn, or get sent lives in your Tekki wallet. Send it to someone, spend it at a merchant, save it, or withdraw. At 10,000 users — the Tekki Card arrives. A real debit card to spend anywhere in Gambia.</p>
+      <div class="pill-row">
+        <div class="fpill fpill-dark">💳 Tekki wallet</div>
+        <div class="fpill fpill-gold">Tekki Card — coming at 10K</div>
+        <div class="fpill fpill-dark">🏪 Spend at merchants</div>
+        <div class="fpill fpill-dark">GMD · GBP · USD · EUR</div>
+      </div>
+
+      <!-- Card tiers -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 16px;">
+          <div style="width:36px;height:22px;border-radius:5px;background:linear-gradient(135deg,#1A0F4F,#6B4CFF,#A78BFA);flex-shrink:0;box-shadow:0 2px 8px rgba(107,76,255,.35);"></div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;">Tekki Standard</div><div style="font-size:11px;color:var(--muted-dark);font-weight:300;">Free for all users · Issued at 10,000 milestone</div></div>
+          <div style="margin-left:auto;font-size:10px;font-weight:700;color:var(--ocean-2);">FREE</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:rgba(245,166,35,.04);border:1px solid rgba(0,212,170,.1);border-radius:12px;padding:13px 16px;">
+          <div style="width:36px;height:22px;border-radius:5px;background:linear-gradient(135deg,#1A1008,#2C1E0A,#00D4AA);flex-shrink:0;box-shadow:0 2px 8px rgba(0,212,170,.25);"></div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--gold);margin-bottom:2px;">Tekki Gold</div><div style="font-size:11px;color:var(--muted-dark);font-weight:300;">Earned · For top challenge performers</div></div>
+          <div style="margin-left:auto;font-size:10px;font-weight:700;color:var(--gold);">EARNED</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-wrap reveal d1">
+      <div class="pglow" style="background:radial-gradient(circle,rgba(0,212,170,.1),transparent 65%)"></div>
+      <!-- Cards visual -->
+      <div class="cards-visual">
+        <!-- Gold back -->
+        <div class="tc tc-gold">
+          <div class="tc-ring" style="width:160px;height:160px;top:-40px;right:-40px;border-color:rgba(0,212,170,.07);"></div>
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:22px;position:relative;z-index:1;">
+            <div style="width:22px;height:22px;background:rgba(245,166,35,.14);border-radius:5px;display:flex;align-items:center;justify-content:center;"><svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.5 8H19L13.8 11.8L15.9 18L10 14.3L4.1 18L6.2 11.8L1 8H7.5L10 2Z" fill="#00D4AA"/></svg></div>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:#00D4AA;">Tekki</span>
+            <span style="margin-left:auto;font-size:8px;font-weight:700;letter-spacing:.06em;color:rgba(0,212,170,.4);border:1px solid rgba(0,212,170,.18);padding:2px 7px;border-radius:100px;">Gold</span>
+          </div>
+          <div class="tc-chip tc-chip-gold"></div>
+          <div class="tc-num" style="color:rgba(0,212,170,.5);">••••  ••••  ••••  9999</div>
+          <div class="tc-bottom">
+            <div><div class="tc-holder-lbl" style="color:rgba(0,212,170,.28);">Card holder</div><div class="tc-holder-name" style="color:rgba(245,166,35,.7);">LAMIN JALLOW</div></div>
+            <div class="tc-debit" style="color:rgba(0,212,170,.3);">debit</div>
+          </div>
+        </div>
+        <!-- Teal front -->
+        <div class="tc tc-teal">
+          <div class="tc-ring" style="width:190px;height:190px;top:-48px;right:-48px;border-color:rgba(255,255,255,.07);"></div>
+          <div class="tc-ring" style="width:120px;height:120px;top:-24px;right:-24px;border-color:rgba(255,255,255,.05);"></div>
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:22px;position:relative;z-index:1;">
+            <div style="width:24px;height:24px;background:rgba(255,255,255,.14);border-radius:6px;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.5 8H19L13.8 11.8L15.9 18L10 14.3L4.1 18L6.2 11.8L1 8H7.5L10 2Z" fill="white"/></svg></div>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:#fff;">Tekki</span>
+          </div>
+          <div class="tc-chip tc-chip-teal"></div>
+          <div class="tc-num" style="color:rgba(255,255,255,.82);">••••  ••••  ••••  4821</div>
+          <div class="tc-bottom">
+            <div><div class="tc-holder-lbl" style="color:rgba(255,255,255,.35);">Card holder</div><div class="tc-holder-name" style="color:#fff;">FATOU KEITA</div></div>
+            <div><div class="tc-holder-lbl" style="color:rgba(255,255,255,.35);">Expires</div><div class="tc-holder-name" style="color:#fff;">09/28</div></div>
+            <div class="tc-debit" style="color:rgba(255,255,255,.45);">debit</div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:-28px;font-size:11px;color:rgba(255,255,255,.18);">Hover to lift ↑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CHALLENGES ══════════════════ -->
+<section class="sec sec-dark">
+  <div class="sec-inner">
+    <div class="reveal" style="max-width:600px;margin-bottom:48px;">
+      <div class="sec-tag tag-gold">The challenge system</div>
+      <h2 class="sec-h sec-h-light">Tekki rewards you<br>for <em>every action.</em></h2>
+      <p class="sec-p sec-p-light" style="max-width:100%">Most apps take from you. Tekki gives back. Every time you send money, receive a transfer, invite a friend, or pay a merchant — you unlock challenges and win real Dalasi. The more you use Tekki, the more you earn.</p>
+    </div>
+
+    <div class="challenge-cards reveal reveal-d1">
+
+      <div class="ch-card ch-card-gold">
+        <div class="ch-badge ch-badge-new">New</div>
+        <div class="ch-icon-wrap" style="background:rgba(0,212,170,.12);">🎯</div>
+        <div class="ch-reward" style="color:var(--gold);">Win D 25</div>
+        <div class="ch-title">First Transfer Challenge</div>
+        <div class="ch-body">Send your first Tekki transfer to anyone. Use a phone number or @username. Complete it and D25 hits your wallet instantly.</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:0%;background:var(--gold)"></div></div>
+      </div>
+
+      <div class="ch-card ch-card-ocean">
+        <div class="ch-badge ch-badge-hot">Popular</div>
+        <div class="ch-icon-wrap" style="background:rgba(107,76,255,.14);">👥</div>
+        <div class="ch-reward" style="color:var(--ocean-2);">Win D 150</div>
+        <div class="ch-title">Invite 3 Friends Challenge</div>
+        <div class="ch-body">Share your Tekki link. When 3 friends sign up and make their first transfer, you both win. The more you invite, the more you earn.</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:0%;background:var(--ocean-2)"></div></div>
+      </div>
+
+      <div class="ch-card ch-card-dark">
+        <div class="ch-icon-wrap" style="background:rgba(0,212,170,.1);">💸</div>
+        <div class="ch-reward" style="color:var(--palm);">Win D 30</div>
+        <div class="ch-title">Receive From Abroad</div>
+        <div class="ch-body">Get your first international remittance through Tekki. D30 added to your wallet the moment it lands — on top of what your family sent.</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:0%;background:var(--palm)"></div></div>
+      </div>
+
+      <div class="ch-card ch-card-dark">
+        <div class="ch-icon-wrap" style="background:rgba(196,132,236,.1);">🏪</div>
+        <div class="ch-reward" style="color:var(--sunset);">Win D 20</div>
+        <div class="ch-title">Pay a Merchant</div>
+        <div class="ch-body">Use Tekki to pay at any participating merchant in Gambia. Complete the challenge and earn D20 back. Shop and get paid to do it.</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:0%;background:var(--sunset)"></div></div>
+      </div>
+
+      <div class="ch-card ch-card-gold">
+        <div class="ch-badge ch-badge-hot">🔥 Hot</div>
+        <div class="ch-icon-wrap" style="background:rgba(0,212,170,.12);">🔥</div>
+        <div class="ch-reward" style="color:var(--gold);">Win D 100</div>
+        <div class="ch-title">7-Day Streak</div>
+        <div class="ch-body">Use Tekki every day for 7 days in a row. Send, receive, check your wallet — anything counts. Stay active, stay rewarded.</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:0%;background:var(--gold)"></div></div>
+      </div>
+
+      <div class="ch-card ch-card-ocean">
+        <div class="ch-icon-wrap" style="background:rgba(107,76,255,.14);">🏆</div>
+        <div class="ch-reward" style="color:var(--ocean-2);">Win D 500</div>
+        <div class="ch-title">Bring 10 Gambians</div>
+        <div class="ch-body">The biggest challenge. Get 10 people to join and make their first transfer. D500 goes straight to your Tekki wallet. No ceiling on what you can earn.</div>
+        <div class="ch-progress"><div class="ch-progress-fill" style="width:0%;background:var(--ocean-2)"></div></div>
+      </div>
+
+    </div>
+
+    <!-- Mini leaderboard -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="reveal reveal-d2">
+      <div class="lb-mini">
+        <div class="lb-mini-hd"><span class="live-dot"></span>Challenge leaderboard · This week</div>
+        <div class="lb-row">
+          <div class="lb-rank" style="background:rgba(0,212,170,.15);color:var(--gold)">1</div>
+          <div class="lb-av" style="background:#EDE8FF;color:#6B4CFF">FT</div>
+          <div class="lb-uname">@fatou_tekki<span class="lb-you">you</span></div>
+          <div class="lb-pts">D 820</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.4)">2</div>
+          <div class="lb-av" style="background:#FEF5E7;color:#00A888">LJ</div>
+          <div class="lb-uname">@lamin22</div>
+          <div class="lb-pts">D 640</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank" style="background:rgba(196,132,236,.12);color:var(--sunset)">3</div>
+          <div class="lb-av" style="background:#FEF0EB;color:#C484EC">MS</div>
+          <div class="lb-uname">@mariama_s</div>
+          <div class="lb-pts">D 390</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank" style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)">4</div>
+          <div class="lb-av" style="background:#F5F5F5;color:#888">OD</div>
+          <div class="lb-uname">@omar_d</div>
+          <div class="lb-pts">D 210</div>
+        </div>
+      </div>
+      <div style="background:var(--ink-3);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-dark);margin-bottom:12px;">Total prizes this month</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:400;color:var(--gold);line-height:1;margin-bottom:6px;">D 24,800</div>
+          <div style="font-size:13px;color:var(--muted-dark);font-weight:300;line-height:1.6;">Paid out to Gambians who sent money, invited friends, and stayed active on Tekki.</div>
+        </div>
+        <button onclick="scrollToForm()" style="width:100%;padding:12px;background:var(--gold);color:var(--ink);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:16px;" onmouseover="this.style.background='#25D366'" onmouseout="this.style.background='var(--gold)'">Start earning →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ REFERRAL ══════════════════ -->
+<section class="sec sec-black">
+  <div class="sec-inner">
+    <div class="reveal" style="max-width:600px;margin-bottom:40px;">
+      <div class="sec-tag tag-palm">Share & earn</div>
+      <h2 class="sec-h sec-h-light">Tell a Gambian<br>about Tekki.<br><em>Both of you win.</em></h2>
+      <p class="sec-p sec-p-light">Every person you bring to Tekki earns you real Dalasi through the referral challenge. They get rewarded for joining. You get rewarded for sharing. The Gambian community grows and everyone benefits.</p>
+    </div>
+    <div class="ref-card reveal reveal-d1">
+      <div class="ref-icon">🔗</div>
+      <div style="flex:1">
+        <div class="ref-title">Share your unique Tekki link.<br>Every friend who joins earns you both money.</div>
+        <div class="ref-body">Traders, students, parents, workers, diaspora families — share Tekki with anyone in Gambia. The founding 150 get extra referral rewards that only apply during the waitlist period.</div>
+      </div>
+      <a class="wa-btn" id="waShareBtn" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Share on WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TRUST ══════════════════ -->
+<section class="sec sec-light">
+  <div class="sec-inner">
+    <div class="reveal" style="margin-bottom:44px;">
+      <div class="sec-tag tag-ocean">Why trust Tekki</div>
+      <h2 class="sec-h sec-h-dark">Built seriously.<br><em>For Gambians.</em></h2>
+    </div>
+    <div class="trust-grid reveal reveal-d1">
+      <div class="trust-card">
+        <div class="trust-icon">🏦</div>
+        <div class="trust-title">Banking infrastructure</div>
+        <div class="trust-body">Tekki is built on licensed banking infrastructure partnered with Gambian financial institutions. Your wallet is protected. Your money is real and regulated.</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🔐</div>
+        <div class="trust-title">Your data. Your money.</div>
+        <div class="trust-body">We never sell your data. Your phone number, email, and transactions are yours. Tekki uses industry-standard encryption. No ads. No tracking. Ever.</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🇬🇲</div>
+        <div class="trust-title">Built in The Gambia</div>
+        <div class="trust-body">Tekki was built by someone who grew up in Gambia and came back to solve a problem they saw up close. This is not a foreign app adjusting to Gambia — it was made for Gambia from day one.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SECOND CTA ══════════════════ -->
+<section class="cta2-section">
+  <div class="cta2-glow"></div>
+  <div class="cta2-inner">
+    <div class="reveal">
+      <div class="sec-tag tag-gold" style="margin-bottom:16px;">Only 150 founding spots</div>
+      <h2 class="cta2-h">Your money.<br>Your <em>rewards.</em><br>Your Tekki.</h2>
+      <p class="cta2-sub">When 150 people sign up the waitlist closes. Founding members get early access, extra challenge rewards, and the best referral bonuses we will ever offer. This opportunity does not come back.</p>
+      <div class="cta2-prog-outer"><div class="cta2-prog-inner" id="cta2Bar"></div></div>
+      <div class="cta2-prog-label"><strong id="cta2Taken">0</strong>&nbsp;spots claimed &nbsp;·&nbsp; <strong id="cta2Left">150</strong>&nbsp;remaining</div>
+
+      <form id="wlForm2" novalidate style="display:flex;flex-direction:column;gap:12px;max-width:440px;margin:0 auto;">
+        <input class="fi" type="text" id="fn2" placeholder="Your full name" style="margin-bottom:0">
+        <div class="ferr" id="fnErr2" style="margin-top:-8px">Please enter your full name</div>
+        <input class="fi" type="email" id="em2" placeholder="Email address" style="margin-bottom:0">
+        <div class="ferr" id="emErr2" style="margin-top:-8px">Please enter a valid email</div>
+        <div class="fphone" id="phWrap2">
+          <div class="fprefix">🇬🇲 +220</div>
+          <input class="fpin" type="tel" id="ph2" placeholder="7XX XXXX" maxlength="7" inputmode="numeric">
+        </div>
+        <div class="ferr" id="phErr2" style="margin-top:-8px">Please enter a valid number</div>
+        <button class="fbtn" type="submit" id="submitBtn2">Claim my founding spot →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Tekki</div>
+  <div class="footer-sub">The money app for Gambians everywhere 🇬🇲 · tekkigambia@gmail.com</div>
+</footer>
+
+<!-- SUCCESS -->
+<div class="soverlay" id="sOverlay">
+  <div class="s-ico">🎉</div>
+  <h2 class="s-h">You're in,<br><em id="sName">friend!</em></h2>
+  <div class="s-badge"><div class="blink"></div>Founding member · Spot #<span id="sSpot">1</span> of 150</div>
+  <p class="s-sub" id="sSub">You are one of the founding 150 Gambians on Tekki. We will reach out the moment we launch. Now share this with someone who needs it.</p>
+  <a class="s-wa" id="sWa" href="#" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Share with a Gambian friend
+  </a>
+  <button class="s-dismiss" onclick="dismiss()">Back to page</button>
+</div>
+
+<script>
+const TOTAL = 150;
+const URL = window.location.href;
+const FORMSPREE = 'mrewnnan'; // ← Replace with your Formspree ID
+
+let taken = parseInt(localStorage.getItem('tekki_taken') || '0');
+
+function wa(name) {
+  const rem = TOTAL - taken;
+  const msg = name
+    ? `I just claimed my founding spot on Tekki 🇬🇲🔥\n\nTekki is the money app for Gambians everywhere — send money by phone or @username, receive from abroad instantly, earn rewards through challenges.\n\nOnly ${rem} founding spots left. Join here: ${URL}`
+    : `Tekki is coming to Gambia 🇬🇲 — the money app for every Gambian.\n\nSend by phone number or @username. Receive from abroad instantly. Win money through challenges.\n\nOnly ${TOTAL - taken} founding spots. Join here: ${URL}`;
+  return 'https://wa.me/?text=' + encodeURIComponent(msg);
+}
+
+function updateUI() {
+  const rem = Math.max(0, TOTAL - taken);
+  const pct = Math.min((taken / TOTAL) * 100, 100);
+  const circ = 2 * Math.PI * 68;
+  const offset = circ - (pct / 100) * circ;
+
+  document.getElementById('ringArc').style.strokeDashoffset = offset;
+  document.getElementById('ringNum').textContent = rem;
+  document.getElementById('navSpots').textContent = rem;
+  ['heroBar','cta2Bar'].forEach(id => { document.getElementById(id).style.width = pct + '%'; });
+  ['heroTaken','cta2Taken'].forEach(id => { document.getElementById(id).textContent = taken; });
+  ['heroLeft','cta2Left'].forEach(id => { document.getElementById(id).textContent = rem; });
+  document.getElementById('waShareBtn').href = wa(null);
+  document.getElementById('sWa').href = wa(null);
+}
+updateUI();
+
+['ph','ph2'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function() { this.value = this.value.replace(/\D/g,''); });
+});
+
+function validate(nameId, emailId, phoneId) {
+  const name = document.getElementById(nameId).value.trim();
+  const email = document.getElementById(emailId).value.trim();
+  const phone = document.getElementById(phoneId).value.trim();
+  const errMap = { [nameId]: nameId.replace('fn','fnErr').replace('2','2'), [emailId]: emailId.replace('em','emErr').replace('2','2'), [phoneId]: phoneId.replace('ph','phErr').replace('2','2') };
+  let ok = true;
+
+  const nameErr = nameId === 'fn' ? 'fnErr' : 'fnErr2';
+  const emailErr = emailId === 'em' ? 'emErr' : 'emErr2';
+  const phoneErr = phoneId === 'ph' ? 'phErr' : 'phErr2';
+  const phoneWrap = phoneId === 'ph' ? 'phWrap' : 'phWrap2';
+
+  [nameErr, emailErr, phoneErr].forEach(e => { document.getElementById(e).style.display = 'none'; });
+
+  if (!name) { document.getElementById(nameErr).style.display = 'block'; ok = false; }
+  if (!email || !/\S+@\S+\.\S+/.test(email)) { document.getElementById(emailErr).style.display = 'block'; ok = false; }
+  if (phone.length < 7) { document.getElementById(phoneErr).style.display = 'block'; document.getElementById(phoneWrap).style.borderColor = 'var(--sunset)'; ok = false; }
+  else { document.getElementById(phoneWrap).style.borderColor = ''; }
+
+  return ok ? { name, email, phone } : null;
+}
+
+function submit(data) {
+  const entry = { ...data, phone: '+220' + data.phone, ts: new Date().toISOString() };
+  const list = JSON.parse(localStorage.getItem('tekki_signups') || '[]');
+  list.push(entry);
+  localStorage.setItem('tekki_signups', JSON.stringify(list));
+  taken++;
+  localStorage.setItem('tekki_taken', taken);
+  updateUI();
+
+  if (true) {
+    const fd = new FormData();
+    Object.entries(entry).forEach(([k,v]) => fd.append(k, v));
+    fd.append('_subject', '🔥 New Tekki Founding Spot Claimed');
+    fetch(`https://formspree.io/f/${FORMSPREE}`, { method:'POST', body:fd, headers:{'Accept':'application/json'} }).catch(()=>{});
+  }
+
+  document.getElementById('sName').textContent = data.name + '!';
+  document.getElementById('sSpot').textContent = taken;
+  document.getElementById('sSub').textContent = `You are founding member #${taken} of ${TOTAL}. We will reach out the moment Tekki launches. Share your link — every friend who joins earns you both real money.`;
+  document.getElementById('sWa').href = wa(data.name);
+  document.getElementById('sOverlay').classList.add('show');
+  confetti();
+}
+
+document.getElementById('wlForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = validate('fn','em','ph');
+  if (d) submit(d);
+});
+document.getElementById('wlForm2').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = validate('fn2','em2','ph2');
+  if (d) submit(d);
+});
+
+function dismiss() {
+  document.getElementById('sOverlay').classList.remove('show');
+  ['fn','em','ph','fn2','em2','ph2'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+}
+
+function scrollToForm() {
+  document.getElementById('heroForm').scrollIntoView({ behavior:'smooth', block:'center' });
+  setTimeout(() => document.getElementById('fn').focus(), 600);
+}
+
+function confetti() {
+  const cols = ['#00D4AA','#6B4CFF','#C484EC','#00D4AA','#FFFFFF','#A78BFA'];
+  for (let i = 0; i < 90; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'cp';
+      const s = 5 + Math.random() * 10;
+      el.style.cssText = `left:${Math.random()*100}vw;top:-12px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${s}px;height:${s}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*.6}s;`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3800);
+    }, i * 22);
+  }
+}
+
+const ro = new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting){en.target.classList.add('in');ro.unobserve(en.target);}}), {threshold:.07});
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+setTimeout(updateUI, 200);
+</script>
+</body>
+</html>
